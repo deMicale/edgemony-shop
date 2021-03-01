@@ -1,0 +1,47 @@
+@media only screen and (min-width: 768px) {
+    .App-hero{
+        border: 1px solid red;
+        height: 70vh;
+        min-width: 100vh;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin: 2%;
+    }
+    .titleHero{
+        padding: 2vh;
+    }
+    .App-cover{
+        height: 50vh; 
+    }
+}
+
+@media only screen and (max-width: 1500px) {
+    .App-cover{
+        height: 40vh; 
+    }
+    .text-wrapper {
+        font-size: 0.9em;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .descriptionHero {
+        display: none;
+    }
+    .App-hero{
+        width: 100vh;
+        border: 1px solid red;
+        height: 80vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 2%;
+    }
+    .App-cover{
+        width: 85vh;
+    }
+    .titleHero{
+        padding: 2vh;
+    }
+}

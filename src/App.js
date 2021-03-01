@@ -1,4 +1,9 @@
 import "./App.css";
+import Header from './components/Header';
+// import Body from './Components/Body';
+import Footer from './components/Footer';
+import Hero from './components/Hero';
+import Card from './components/Card';
 
 const fakeProducts = require("./mocks/data/products.json");
 
@@ -13,7 +18,22 @@ const data = {
 };
 
 function App() {
-  return <div className="App"></div>;
+  return <div className="App">
+    <Header
+      logo ={data.logo}
+      // title = {data.title}
+      />
+    <Hero
+      cover = {data.cover}
+      title = {data.title}
+      description = {data.description}
+    />
+    <div className='card-container'>
+       {data.products.map(product => {
+       return <Card product = {product} key = {product.id} />})}
+    </div>
+    <Footer/>
+  </div>;
 }
 
 export default App;

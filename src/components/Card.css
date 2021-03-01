@@ -1,0 +1,47 @@
+.App-Card{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    min-width: 300px;
+    max-width: 300px;
+    min-height: 400px;
+    max-height: 400px;
+    overflow: hidden;
+    position: relative;
+    margin-right: 5px;
+    scroll-snap-align: start;
+    cursor: pointer;
+    background-color: white;
+    border-radius:10px;
+}
+.Img-card{
+    margin: 0;
+    max-height: 150px;
+}
+.imgEl{
+    background-image: cover;
+    margin: 0;
+    max-height: 150px;
+    padding: 15px;
+}
+.Text-card {
+     max-height: 250px;
+     padding: 15px;
+     padding-top: 5px;
+ }
+.titleEl{
+    font-size: 18px;
+}
+.priceEl{
+    font-size: 12px;
+    max-height: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    left: 90px;
+}
+@media only screen and (min-width:768px){
+    .App-Card{
+        margin: 2vh;
+    }
+}
