@@ -30,7 +30,7 @@ function App() {
     />
     <div className='card-container'>
        {data.products.map(product => {
-       return <Card product = {product} />})}
+       return <Card product = {product} key = {product.id} />})}
     </div>
     <Footer/>
   </div>;
