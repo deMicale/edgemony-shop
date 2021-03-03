@@ -4,8 +4,10 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
 import Card from './components/Card';
+import Error from './components/Error';
+import { useState, useEffect } from "react";
 
-const fakeProducts = require("./mocks/data/products.json");
+// const fakeProducts = require("./mocks/data/products.json");
 
 const data = {
   title: "Edgemony Shop",
@@ -13,12 +15,34 @@ const data = {
   logo:
     "https://edgemony.com/wp-content/uploads/2020/03/cropped-Logo-edgemony_TeBIANCO-04.png",
   cover:
-    "https://images.pexels.com/photos/4123897/pexels-photo-4123897.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-  products: fakeProducts,
+    "https://images.pexels.com/photos/4123897/pexels-photo-4123897.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+  // products: fakeProducts,
 };
 
 function App() {
-  return <div className="App">
+
+  const [products, setProducts] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+
+    setLoading(true);
+    setError(false);
+
+    fetch('https://fakestoreapi.com/products')
+      .then(response => response.json())
+      .then((products) => {
+        setProducts(products);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        setError(true);
+      });
+  }, []);
+
+  return (<div className="App">
     <Header
       logo ={data.logo}
       // title = {data.title}
@@ -29,11 +53,16 @@ function App() {
       description = {data.description}
     />
     <div className='card-container'>
-       {data.products.map(product => {
-       return <Card product = {product} key = {product.id} />})}
+      {!isLoading ? (
+        products.map(product => {
+          return <Card product = {product} key = {product.id} />
+        })
+      ) : (<div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>)
+      }
+      {error&&<Error/>}
     </div>
     <Footer/>
-  </div>;
+  </div>);
 }
 
 export default App;
