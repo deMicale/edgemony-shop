@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
 import Card from './components/Card';
+import Error from './components/Error';
 import { useState, useEffect } from "react";
 
 // const fakeProducts = require("./mocks/data/products.json");
@@ -58,6 +59,7 @@ function App() {
         })
       ) : (<div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>)
       }
+      {error&&<Error/>}
     </div>
     <Footer/>
   </div>);
