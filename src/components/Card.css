@@ -11,7 +11,8 @@
     margin-right: 5px;
     scroll-snap-align: start;
     background-color: white;
-    border-radius:10px;
+    border-radius:15px;
+    justify-content: space-around;
     
 }
 /* .App-Card:hover{
@@ -20,12 +21,13 @@
 .Img-card{
     margin: 0;
     max-height: 150px;
+    text-align: center;
 }
 .imgEl{
     background-image: cover;
     margin: 0;
     max-height: 150px;
-    padding: 15px;
+    padding: 10px;
 }
 .Text-card {
      max-height: 250px;
@@ -34,17 +36,27 @@
  }
 .titleEl{
     font-size: 18px;
+    padding: 15px;
 }
 .priceEl{
-    font-size: 12px;
+    font-size: 15px;
     max-height: 150px;
     overflow: hidden;
     text-overflow: ellipsis;
-    position: relative;
-    left: 90px;
+    text-align: center;
 }
-button {
+.view {
     cursor: pointer;
+    position: relative;
+    left: 120px;
+    background-color:#2596be;
+    padding: 5px;
+    border-radius: 7px;
+    color:white;
+    box-shadow: 5px 5px 3px rgb(73, 71, 71);
+}
+.view:hover{
+    color: yellow;
 }
 @media only screen and (min-width:768px){
     .App-Card{

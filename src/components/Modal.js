@@ -10,7 +10,7 @@ function Modal(props) {
             }}></div>
             <div className='modalContent'>
                 <div className='modalBtn'>
-                    <button onClick={() => {props.isOpen(false)
+                    <button className ="btnClose" onClick={() => {props.isOpen(false)
                     document.body.style.overflow = 'scroll'}}>X</button>
                 </div>
                 <div className ='modalCard'>
