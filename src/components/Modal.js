@@ -20,7 +20,7 @@ function Modal(props) {
                     <div className ='Text-card'>
                         <h1 className ='titleEl'>{props.product.title}</h1>
                         <p className='descriptionEl'>{props.product.description}</p>
-                        <p className='priceEl'>{props.product.price}</p>
+                        <p className='priceEl'>€{props.product.price}</p>
                     </div>
                 </div>
             </div>

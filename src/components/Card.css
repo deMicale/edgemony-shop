@@ -14,9 +14,9 @@
     border-radius:10px;
     
 }
-.App-Card:hover{
+/* .App-Card:hover{
     transform: translateY(-20px);
-}
+} */
 .Img-card{
     margin: 0;
     max-height: 150px;
