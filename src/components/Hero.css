@@ -1,12 +1,17 @@
+.App-cover{
+    border-radius: 20px;
+    box-shadow: 10px 10px 5px rgb(73, 71, 71);
+}
 @media only screen and (min-width: 768px) {
     .App-hero{
-        border: 1px solid red;
+        /* border: 1px solid red; */
         height: 70vh;
         min-width: 100vh;
         display: flex;
         justify-content: space-around;
         align-items: center;
         margin: 2%;
+        background-color: #2596be;
     }
     .titleHero{
         padding: 2vh;
@@ -23,6 +28,9 @@
     .text-wrapper {
         font-size: 0.9em;
     }
+    .App-hero{
+        background-color: #2596be;
+    }
 }
 
 @media only screen and (max-width: 768px) {
@@ -37,6 +45,7 @@
         flex-direction: column;
         align-items: center;
         margin: 2%;
+        background-color: #2596be;
     }
     .App-cover{
         width: 85vh;

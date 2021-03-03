@@ -1,3 +1,17 @@
+*{
+  font-family: 'Akaya Telivigala', cursive;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.card-container{
+  background-color: #6e5f45;
+  height: fit-content;
+  margin: 2%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+
 .lds-ellipsis {
   display: inline-block;
   position: relative;
@@ -59,11 +73,12 @@
     .card-container{
         margin-top: 7vh;
         min-width: 100vh;
-        max-height: 70vh;
+        /* max-height: 70vh; */
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
+        margin: 2%;
     }
 }
 
@@ -71,13 +86,14 @@
     .card-container{
         margin-top: 7vh;
         min-width: 100vh;
-        max-height: 70vh;
+        /* max-height: 70vh; */
         display: flex;
         flex-direction: row;
         overflow-x: scroll;
         scroll-snap-type: x mandatory;
         -ms-overflow-style: none;  
         scrollbar-width: none;
+        margin: 2%;
     }
     .card-container::-webkit-scrollbar {
         display: none;

@@ -19,7 +19,7 @@ function Card(props){
             </div>
             <div className ='Text-card'>
                 <h1 className ='titleEl'>{props.product.title}</h1>
-                <p className='priceEl'>{props.product.price}</p>
+                <p className='priceEl'>€{props.product.price}</p>
                 <button onClick={() => {
                     // document.body.style.position = 'fixed';
                     document.body.style.overflow= 'hidden';
