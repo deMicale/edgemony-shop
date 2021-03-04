@@ -1,11 +1,12 @@
 import "./App.css";
 import Header from './components/Header';
-// import Body from './Components/Body';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
 import Card from './components/Card';
 import Error from './components/Error';
 import Loader from './components/Loader';
+import Search from './components/Search';
+
 import { useState, useEffect } from "react";
 
 // const fakeProducts = require("./mocks/data/products.json");
@@ -44,6 +45,11 @@ function App() {
       });
   }, [retry]);
 
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+
+
   return (<div className="App">
     <Header
       logo ={data.logo}
@@ -54,11 +60,22 @@ function App() {
       title = {data.title}
       description = {data.description}
     />
+    <Search 
+      searchTerm = {searchTerm}
+      setSearchTerm = {setSearchTerm}
+    />
+
+  
     <div className='card-container'>
       {!isLoading 
       ? (products.map(product => {
-          return <Card product = {product} key = {product.id} />})
-        ) 
+          if(product.title.includes(searchTerm)||product.description.includes(searchTerm)){
+            return <Card product = {product} key = {product.id} />
+          } 
+          return null;
+        } //end arrow 
+        ) // end map
+      ) // first condition ternary operator
       : (<Loader/>)
       }
       {error&&<Error
