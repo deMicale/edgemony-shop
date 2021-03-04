@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Hero from './components/Hero';
 import Card from './components/Card';
 import Error from './components/Error';
+import Loader from './components/Loader';
 import { useState, useEffect } from "react";
 
 // const fakeProducts = require("./mocks/data/products.json");
@@ -24,6 +25,7 @@ function App() {
   const [products, setProducts] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [retry, setRetry] = useState(false);
 
   useEffect(() => {
 
@@ -40,7 +42,7 @@ function App() {
         setLoading(false);
         setError(true);
       });
-  }, []);
+  }, [retry]);
 
   return (<div className="App">
     <Header
@@ -53,13 +55,16 @@ function App() {
       description = {data.description}
     />
     <div className='card-container'>
-      {!isLoading ? (
-        products.map(product => {
-          return <Card product = {product} key = {product.id} />
-        })
-      ) : (<div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>)
+      {!isLoading 
+      ? (products.map(product => {
+          return <Card product = {product} key = {product.id} />})
+        ) 
+      : (<Loader/>)
       }
-      {error&&<Error/>}
+      {error&&<Error
+        setRetry={setRetry} 
+        retry = {retry} 
+        setError = {setError}/>}
     </div>
     <Footer/>
   </div>);
