@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import Hero from './components/Hero';
 import Search from './components/Search';
 import ContainerCard from "./components/ContainerCard";
+import Category from './components/Category';
 
 import { useState, useEffect } from "react";
 
@@ -47,7 +48,7 @@ function App() {
 
   const [searchTerm, setSearchTerm] = useState("");
 
-
+  const [category, setCategory] = useState([]);
 
   return (<div className="App">
     <Header
@@ -59,10 +60,16 @@ function App() {
       title = {data.title}
       description = {data.description}
     />
-    <Search 
-      searchTerm = {searchTerm}
-      setSearchTerm = {setSearchTerm}
-    />
+    <div className="app-filter-box">
+      <Search 
+        searchTerm = {searchTerm}
+        setSearchTerm = {setSearchTerm}
+      />
+      <Category
+        category = {category}
+        setCategory={setCategory}
+      />
+    </div>
     <ContainerCard
       products = {products}
       isLoading = {isLoading}
@@ -71,6 +78,7 @@ function App() {
       searchTerm = {searchTerm}
       retry = {retry}
       setError = {setError}
+      category = {category}
     />
     <Footer/>
   </div>);

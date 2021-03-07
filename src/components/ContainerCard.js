@@ -10,10 +10,11 @@ function ContainerCard(props){
 
     return(
         <div className='card-container'>
-            {empty = true,
-            !props.isLoading ? (props.products.map(product => {
-                if(product.title.toLowerCase().includes(props.searchTerm.toLowerCase())
-                    || product.description.toLowerCase().includes(props.searchTerm.toLowerCase())) {
+            {empty = true}
+            {!props.isLoading ? (props.products.map(product => {
+                if((product.title.toLowerCase().includes(props.searchTerm.toLowerCase())
+                    || product.description.toLowerCase().includes(props.searchTerm.toLowerCase()))
+                    && (props.category.includes(product.category) || props.category.length === 0)) {
                     empty = false;
                     return <Card product = {product} key = {product.id} />
                 } 

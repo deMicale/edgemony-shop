@@ -3,4 +3,8 @@
   font-family: 'Ubuntu', sans-serif;
 }
 
+.app-filter-box{
+  display: flex;
+  justify-content: space-around;
+}
 
