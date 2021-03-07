@@ -2,12 +2,12 @@ import "./App.css";
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
-import Card from './components/Card';
-import Error from './components/Error';
-import Loader from './components/Loader';
 import Search from './components/Search';
+import ContainerCard from "./components/ContainerCard";
+import Category from './components/Category';
 
 import { useState, useEffect } from "react";
+
 
 // const fakeProducts = require("./mocks/data/products.json");
 
@@ -48,7 +48,7 @@ function App() {
 
   const [searchTerm, setSearchTerm] = useState("");
 
-
+  const [category, setCategory] = useState([]);
 
   return (<div className="App">
     <Header
@@ -60,29 +60,26 @@ function App() {
       title = {data.title}
       description = {data.description}
     />
-    <Search 
-      searchTerm = {searchTerm}
-      setSearchTerm = {setSearchTerm}
-    />
-
-  
-    <div className='card-container'>
-      {!isLoading 
-      ? (products.map(product => {
-          if(product.title.includes(searchTerm)||product.description.includes(searchTerm)){
-            return <Card product = {product} key = {product.id} />
-          } 
-          return null;
-        } //end arrow 
-        ) // end map
-      ) // first condition ternary operator
-      : (<Loader/>)
-      }
-      {error&&<Error
-        setRetry={setRetry} 
-        retry = {retry} 
-        setError = {setError}/>}
+    <div className="app-filter-box">
+      <Search 
+        searchTerm = {searchTerm}
+        setSearchTerm = {setSearchTerm}
+      />
+      <Category
+        category = {category}
+        setCategory={setCategory}
+      />
     </div>
+    <ContainerCard
+      products = {products}
+      isLoading = {isLoading}
+      error = {error}
+      setRetry ={setRetry}
+      searchTerm = {searchTerm}
+      retry = {retry}
+      setError = {setError}
+      category = {category}
+    />
     <Footer/>
   </div>);
 }

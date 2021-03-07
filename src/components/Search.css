@@ -1,5 +1,9 @@
+*:focus {
+    outline: none;
+}
+
 .searchBar{
-    text-align: center;
+    text-align:left;
     margin: 15vh;
 }
 .inputData{
