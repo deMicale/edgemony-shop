@@ -1,5 +1,5 @@
 import "./App.css";
-import Header from './components/Header';
+import Header from './components/Header/Header';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
 import Search from './components/Search';
@@ -50,10 +50,14 @@ function App() {
 
   const [category, setCategory] = useState([]);
 
+  //cart
+  const [cart, setCart] = useState([]);
+
   return (<div className="App">
     <Header
       logo ={data.logo}
       // title = {data.title}
+      cart = {cart}
       />
     <Hero
       cover = {data.cover}
@@ -79,6 +83,8 @@ function App() {
       retry = {retry}
       setError = {setError}
       category = {category}
+      cart = {cart}
+      setCart = {setCart}
     />
     <Footer/>
   </div>);

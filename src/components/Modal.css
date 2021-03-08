@@ -54,3 +54,11 @@
     background-color: darkgrey;
     outline: 1px solid slategrey;
   }
+
+.btnAddToCart {
+    border-radius: 10px;
+    background-color:yellow;
+    padding: 1%;
+    border: 2px solid yellow;
+    margin-bottom: 10px;
+}
