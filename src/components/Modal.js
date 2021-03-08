@@ -27,13 +27,13 @@ function Modal(props) {
                         <h1 className ='titleEl'>{props.product.title}</h1>
                         <p className='descriptionEl'>{props.product.description}</p>
                         <p className='priceEl'>€{props.product.price} </p>
-                        <button className ="btnAddToCart" onClick={() => {
-                            setButtonText("In cart");
-                            // const cartCopied = props.cart.slice(); //copy of array
-                            // cartCopied.push(props.product.price) //add each price to cart array
-
-                            props.setCart([...props.cart, props.product.price]); //modify local copy of cart array to update also cart
-                            
+                        <button className ="btnAddToCart" onClick={() => { 
+                            if(buttonText!=="In cart"){
+                                setButtonText("In cart");
+                                // const cartCopied = props.cart.slice(); //copy of array
+                                // cartCopied.push(props.product.price) //add each price to cart array
+                                props.setCart([...props.cart, props.product.price]); //modify local copy of cart array to update also cart
+                            }
                             // console.log(props.cart)
                             }}>{buttonText}</button> 
                     </div>
