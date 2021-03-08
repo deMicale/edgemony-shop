@@ -16,7 +16,8 @@ function ContainerCard(props){
                     || product.description.toLowerCase().includes(props.searchTerm.toLowerCase()))
                     && (props.category.includes(product.category) || props.category.length === 0)) {
                     empty = false;
-                    return <Card product = {product} key = {product.id} />
+                    return <Card product = {product} key = {product.id}
+                                cart = {props.cart} setCart = {props.setCart} />
                 } 
                 return null;
                 } //end arrow 

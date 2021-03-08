@@ -12,6 +12,8 @@ function Card(props){
             {modalIsOpen && <Modal 
                 product={props.product} 
                 isOpen={setModalIsOpen}
+                cart = {props.cart}
+                setCart = {props.setCart}
             />}
             
             <div className ='Img-card'>
@@ -23,7 +25,7 @@ function Card(props){
                 <button className="view" onClick={() => {
                     // document.body.style.position = 'fixed';
                     document.body.style.overflow= 'hidden';
-                    setModalIsOpen(true)}}>View more details</button>
+                    setModalIsOpen(true)}}>View more details</button>   
             </div>
         </div>
         )
