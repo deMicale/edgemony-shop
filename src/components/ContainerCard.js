@@ -17,7 +17,8 @@ function ContainerCard(props){
                     && (props.category.includes(product.category) || props.category.length === 0)) {
                     empty = false;
                     return <Card product = {product} key = {product.id}
-                                cart = {props.cart} setCart = {props.setCart} />
+                                setModalIsOpen = {props.setModalIsOpen}
+                                setProductInModal = {props.setProductInModal} />
                 } 
                 return null;
                 } //end arrow 

@@ -2,6 +2,7 @@
     border-radius: 20px;
     box-shadow: 10px 10px 5px rgb(73, 71, 71);
 }
+
 @media only screen and (min-width: 768px) {
     .App-hero{
         /* border: 1px solid red; */
@@ -53,4 +54,8 @@
     .titleHero{
         padding: 2vh;
     }
+}
+
+.App-hero{
+    margin-top: 18vh;
 }

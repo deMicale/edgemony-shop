@@ -16,8 +16,10 @@ function Modal(props) {
             }}></div>
             <div className='modalContent'>
                 <div className='modalBtn'>
-                    <button className ="btnClose" onClick={() => {props.isOpen(false)
-                    document.body.style.overflow = 'scroll'}}>X</button>
+                    <button className ="btnClose" onClick={() => {
+                        props.isOpen(false)
+                        document.body.style.overflow = 'scroll'
+                        }}>X</button>
                 </div>
                 <div className ='modalCard'>
                     <div className ='Img-card'>
@@ -32,7 +34,7 @@ function Modal(props) {
                                 setButtonText("In cart");
                                 // const cartCopied = props.cart.slice(); //copy of array
                                 // cartCopied.push(props.product.price) //add each price to cart array
-                                props.setCart([...props.cart, props.product.price]); //modify local copy of cart array to update also cart
+                                props.setCart([...props.cart, {id: props.product.id, quantity: 1}]); //modify local copy of cart array to update also cart
                             }
                             // console.log(props.cart)
                             }}>{buttonText}</button> 

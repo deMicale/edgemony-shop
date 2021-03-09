@@ -5,6 +5,7 @@ import Hero from './components/Hero';
 import Search from './components/Search';
 import ContainerCard from "./components/ContainerCard";
 import Category from './components/Category';
+import Modal from "./components/Modal";
 
 import { useState, useEffect } from "react";
 
@@ -47,17 +48,22 @@ function App() {
 
 
   const [searchTerm, setSearchTerm] = useState("");
-
   const [category, setCategory] = useState([]);
 
   //cart
   const [cart, setCart] = useState([]);
+
+  //modal
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [productInModal, setProductInModal] = useState({});
+
 
   return (<div className="App">
     <Header
       logo ={data.logo}
       // title = {data.title}
       cart = {cart}
+      products = {products}
       />
     <Hero
       cover = {data.cover}
@@ -83,9 +89,17 @@ function App() {
       retry = {retry}
       setError = {setError}
       category = {category}
+      setModalIsOpen = {setModalIsOpen}
+      setProductInModal = {setProductInModal}
+    />
+
+    {modalIsOpen && <Modal 
+      product={productInModal}
+      isOpen={setModalIsOpen}
       cart = {cart}
       setCart = {setCart}
-    />
+    />}
+
     <Footer/>
   </div>);
 }
