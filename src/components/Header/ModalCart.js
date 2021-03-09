@@ -1,8 +1,6 @@
 import './ModalCart.css';
 
 function ModalCart(props){
-
-
     return(
         <div className="modalCart">
             <div className="overlayCart" onClick={() => {
@@ -23,7 +21,7 @@ function ModalCart(props){
                         return (
                             <main className="productsInCart" key={product.id}>
                                 <div className="imgProductWrapper">
-                                    <img src={product.image} className="imgProduct"/>                            
+                                    <img src={product.image} className="imgProduct" alt={product.title}/>                            
                                 </div>
                                 <div className="contentProductWrapper">
                                     <h3 className="nameProduct">{product.title}</h3>

@@ -1,6 +1,7 @@
 import './Cart.css'
 import ModalCart from './ModalCart';
-import { useState } from 'react';
+
+import { useState } from "react";
 
 function Cart(props){
     const totalPrice = props.cart.reduce((acc, cartItem) =>{
@@ -9,13 +10,13 @@ function Cart(props){
     },0).toFixed(2)
     
     const [modalCart, setModalCart] = useState(false);
-
+    
     return (
-        <div className="cart" onClick={() => {
-            setModalCart(true);
-            document.body.style.overflow = 'hidden';
+        <div className="cart">
+            <div className = "wrapperIconCart" onClick={() => {
+                setModalCart(true);
+                document.body.style.overflow = 'hidden';
             }}>
-            <div className = "wrapperIconCart" >
                 <img src={process.env.PUBLIC_URL + 'shopping-cart.png'} 
                     alt="cart-logo"
                     className="iconCart"/>

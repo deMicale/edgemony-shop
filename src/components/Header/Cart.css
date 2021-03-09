@@ -10,6 +10,7 @@
 .wrapperIconCart{
     max-width:60px;
     max-height: 60px;
+    cursor: pointer;
 }
 .iconCart{
     max-width:60px;
