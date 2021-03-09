@@ -40,7 +40,7 @@
 
 .descriptionEl {
     overflow-y: scroll;
-    max-height: 100px;
+    max-height: 80px;
 }
 .descriptionEl::-webkit-scrollbar {
     width: 1em;

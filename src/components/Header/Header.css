@@ -3,14 +3,17 @@
     min-width: 100vh;
     /* border:1px solid black; */
     display:flex;
-    margin: 2%;
     background-color: #a3a7a3;
-    border-radius: 20px 20px 0px 0px;
     justify-content: space-between;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right:0px;
+    z-index: 4;
 }
 
-@media only screen and (max-width: 768px) {
+/* @media only screen and (max-width: 768px) {
     .App-header {
-        width: 100vh;
+        min-width: 100vh;
     }
-}
+} */
