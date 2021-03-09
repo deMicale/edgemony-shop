@@ -111,6 +111,17 @@
 .qtyProduct, .priceProduct, .btnRemove{
     margin: 1%;
 }
+.qtyProduct{
+    display: flex;
+    align-items: center;
+}
+.minusProduct, .plusProduct{
+    max-height: 27px;
+    margin: 7px;
+    background-color: rgb(8, 180, 8);
+    border-radius: 5px;
+    font-size: 1rem; 
+}
 .btnRemove{
     max-width: 10vh;
     min-width: 5vh;

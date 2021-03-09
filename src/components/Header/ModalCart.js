@@ -25,7 +25,12 @@ function ModalCart(props){
                                 </div>
                                 <div className="contentProductWrapper">
                                     <h3 className="nameProduct">{product.title}</h3>
-                                    <span className="qtyProduct"> Quantity: {cartItem.quantity}</span>
+                                    <span className="qtyProduct"> 
+                                        <p>Quantity:</p>
+                                        <button className="minusProduct">-</button> 
+                                        <p>{cartItem.quantity}</p>
+                                        <button className="plusProduct">+</button>
+                                    </span>
                                     <span className="priceProduct">€ {product.price}</span>
                                     <button className="btnRemove">Remove</button>
                                 </div>
