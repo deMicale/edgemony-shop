@@ -1,6 +1,12 @@
 import './ModalCart.css';
 
 function ModalCart(props){
+
+    const totalPrice = props.cart.reduce((acc, cartItem) =>{
+        const product = props.products.find(product => product.id === cartItem.id)
+        return acc + (product.price*cartItem.quantity)
+    },0).toFixed(2);
+
     return(
         <div className="modalCart">
             <div className="overlayCart" onClick={() => {
@@ -16,6 +22,7 @@ function ModalCart(props){
                             document.body.style.overflow = 'scroll';
                             }}>X</button>
                     </header>
+
                     {props.cart.map((cartItem) => {
                         const product = props.products.find(product => product.id === cartItem.id)
                         return (
@@ -27,18 +34,27 @@ function ModalCart(props){
                                     <h3 className="nameProduct">{product.title}</h3>
                                     <span className="qtyProduct"> 
                                         <p>Quantity:</p>
-                                        <button className="minusProduct">-</button> 
+
+                                        <button className="minusProduct" onClick = {
+                                            () => props.setProductQuantity(product.id, cartItem.quantity-1) 
+                                             } disabled={cartItem.quantity === 1}>-</button> 
+
                                         <p>{cartItem.quantity}</p>
-                                        <button className="plusProduct">+</button>
+
+                                        <button className="plusProduct" onClick = {
+                                            () => props.setProductQuantity(product.id, cartItem.quantity+1)
+                                             }>+</button>
+
                                     </span>
                                     <span className="priceProduct">€ {product.price}</span>
-                                    <button className="btnRemove">Remove</button>
+                                    <button className="btnRemove" onClick= {() => props.removeFromCart(product.id)}>Remove</button>
                                 </div>
                             </main>
                         );
                     })}
+                    
                     <footer className="footerCart">
-                        <p className="totalCart">Total price : € {props.totalPrice}</p>
+                        <p className="totalCart">Total price : € {totalPrice}</p>
                     </footer>
                 </div>
             </div>

@@ -7,7 +7,8 @@ function Header(props){
             <img src={props.logo} className="App-logo" alt="logo" /> 
             <Cart
              cart = {props.cart}
-             products ={props.products}/>
+             products ={props.products}
+             setModalCart = {props.setModalCart}/>
         </header>
     );
 }
