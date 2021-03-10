@@ -6,11 +6,10 @@ import Search from './components/Search';
 import ContainerCard from "./components/ContainerCard";
 import Category from './components/Category';
 import Modal from "./components/Modal";
+import ModalCart from './components/ModalCart';
 
 import { useState, useEffect } from "react";
 
-
-// const fakeProducts = require("./mocks/data/products.json");
 
 const data = {
   title: "Edgemony Shop",
@@ -19,7 +18,6 @@ const data = {
     "https://edgemony.com/wp-content/uploads/2020/03/cropped-Logo-edgemony_TeBIANCO-04.png",
   cover:
     "https://images.pexels.com/photos/4123897/pexels-photo-4123897.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-  // products: fakeProducts,
 };
 
 function App() {
@@ -46,7 +44,7 @@ function App() {
       });
   }, [retry]);
 
-
+  // search bar and filter categories
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState([]);
 
@@ -57,6 +55,34 @@ function App() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [productInModal, setProductInModal] = useState({});
 
+  //modal cart
+  const [modalCart, setModalCart] = useState(false);
+ 
+  //function adding each product to the cart thanks to prdoduct id
+  function addToCart(productId){  
+    setCart([...cart, { id: productId, quantity: 1}]); 
+  // to access to the cart and to build a new array by adding a new object 
+  //to render the new product template
+  }
+  
+  //function removing each product by comparing its id and the id product 
+  //selected by the user
+  function removeFromCart(productId) {
+    setCart(cart.filter((product) => product.id !== productId));
+    // to filter the cart and to render for each product after have verified 
+    //whether there is a match or not. If there isn't a matching, remove the product selcted 
+  }
+  
+  //to set the quantity
+  function setProductQuantity(productId, quantity) {
+    setCart(
+      cart.map((product) =>
+        product.id === productId ? { ...product, quantity } : product
+      )
+    );
+  }
+
+
 
   return (<div className="App">
     <Header
@@ -64,6 +90,7 @@ function App() {
       // title = {data.title}
       cart = {cart}
       products = {products}
+      setModalCart = {setModalCart}
       />
     <Hero
       cover = {data.cover}
@@ -92,12 +119,19 @@ function App() {
       setModalIsOpen = {setModalIsOpen}
       setProductInModal = {setProductInModal}
     />
-
+    {modalCart && <ModalCart
+      setModalCart={setModalCart}
+      cart ={cart}
+      products = {products}
+      removeFromCart = {removeFromCart} // function as props in modalCart
+      setProductQuantity = {setProductQuantity} //
+      />}
     {modalIsOpen && <Modal 
       product={productInModal}
       isOpen={setModalIsOpen}
-      cart = {cart}
-      setCart = {setCart}
+      addToCart = {addToCart} // to get addToCart function as props in Modal
+      // cart = {cart}        // 
+      // setCart = {setCart}
     />}
 
     <Footer/>

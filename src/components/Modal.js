@@ -32,11 +32,8 @@ function Modal(props) {
                         <button className ="btnAddToCart" onClick={() => { 
                             if(buttonText!=="In cart"){
                                 setButtonText("In cart");
-                                // const cartCopied = props.cart.slice(); //copy of array
-                                // cartCopied.push(props.product.price) //add each price to cart array
-                                props.setCart([...props.cart, {id: props.product.id, quantity: 1}]); //modify local copy of cart array to update also cart
+                                props.addToCart(props.product.id); // get addToCart function from App
                             }
-                            // console.log(props.cart)
                             }}>{buttonText}</button> 
                     </div>
                 </div>
