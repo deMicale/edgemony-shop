@@ -6,9 +6,10 @@ import Search from './components/Search';
 import ContainerCard from "./components/ContainerCard";
 import Category from './components/Category';
 import Modal from "./components/Modal";
-import ModalCart from './components/ModalCart';
+import ModalSidebar from './components/ModalSidebar';
 
 import { useState, useEffect } from "react";
+import Cart from "./components/Cart";
 
 
 const data = {
@@ -56,7 +57,7 @@ function App() {
   const [productInModal, setProductInModal] = useState({});
 
   //modal cart
-  const [modalCart, setModalCart] = useState(false);
+  const [modalSidebar, setModalSidebar] = useState(false);
  
   //function adding each product to the cart thanks to prdoduct id
   function addToCart(productId){  
@@ -90,7 +91,7 @@ function App() {
       // title = {data.title}
       cart = {cart}
       products = {products}
-      setModalCart = {setModalCart}
+      setModalSidebar = {setModalSidebar}
       />
     <Hero
       cover = {data.cover}
@@ -119,13 +120,14 @@ function App() {
       setModalIsOpen = {setModalIsOpen}
       setProductInModal = {setProductInModal}
     />
-    {modalCart && <ModalCart
-      setModalCart={setModalCart}
-      cart ={cart}
-      products = {products}
-      removeFromCart = {removeFromCart} // function as props in modalCart
-      setProductQuantity = {setProductQuantity} //
-      />}
+    {modalSidebar && <ModalSidebar setModalSidebar={setModalSidebar}>
+        <Cart
+          cart ={cart}
+          products = {products}
+          removeFromCart = {removeFromCart} // function as props in modalCart
+          setProductQuantity = {setProductQuantity}
+          />  
+      </ModalSidebar>}
     {modalIsOpen && <Modal 
       product={productInModal}
       isOpen={setModalIsOpen}

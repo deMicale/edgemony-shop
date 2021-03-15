@@ -1,15 +1,15 @@
-import './Cart.css';
+import './CartHeader.css';
 
-function Cart(props){
+function CartHeader(props){
     const totalPrice = props.cart.reduce((acc, cartItem) =>{
         const product = props.products.find(product => product.id === cartItem.id)
         return acc + (product.price*cartItem.quantity)
     },0).toFixed(2)
     
     return (
-        <div className="cart">
+        <div className="cartHeader">
             <div className = "wrapperIconCart" onClick={() => {
-                props.setModalCart(true);
+                props.setModalSidebar(true);
                 document.body.style.overflow = 'hidden';
             }}>
                 <img src={process.env.PUBLIC_URL + 'shopping-cart.png'} 
@@ -22,5 +22,5 @@ function Cart(props){
         </div>
     )
 }
-export default Cart;
+export default CartHeader;
 

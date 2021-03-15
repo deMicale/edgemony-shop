@@ -1,14 +1,14 @@
 import './Header.css';
-import Cart from "./Cart";
+import CartHeader from "./CartHeader";
 
 function Header(props){
     return (
         <header className="App-header">
             <img src={props.logo} className="App-logo" alt="logo" /> 
-            <Cart
+            <CartHeader
              cart = {props.cart}
              products ={props.products}
-             setModalCart = {props.setModalCart}/>
+             setModalSidebar = {props.setModalSidebar}/>
         </header>
     );
 }
