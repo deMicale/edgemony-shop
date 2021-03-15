@@ -129,8 +129,7 @@ function App() {
           setProductQuantity = {setProductQuantity}
           />  
       </ModalSidebar>}
-    {modalIsOpen && <Modal isOpen={setModalIsOpen}
-      >
+    {modalIsOpen && <Modal isOpen={setModalIsOpen}>
         <ProductDetail
           product={productInModal}
           addToCart = {addToCart} // to get addToCart function as props in Modal
