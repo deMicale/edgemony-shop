@@ -7,9 +7,10 @@ import ContainerCard from "./components/ContainerCard";
 import Category from './components/Category';
 import Modal from "./components/Modal";
 import ModalSidebar from './components/ModalSidebar';
+import ProductDetail from './components/ProductDetail';
+import Cart from "./components/Cart";
 
 import { useState, useEffect } from "react";
-import Cart from "./components/Cart";
 
 
 const data = {
@@ -128,13 +129,14 @@ function App() {
           setProductQuantity = {setProductQuantity}
           />  
       </ModalSidebar>}
-    {modalIsOpen && <Modal 
-      product={productInModal}
-      isOpen={setModalIsOpen}
-      addToCart = {addToCart} // to get addToCart function as props in Modal
-      // cart = {cart}        // 
-      // setCart = {setCart}
-    />}
+    {modalIsOpen && <Modal isOpen={setModalIsOpen}>
+        <ProductDetail
+          product={productInModal}
+          addToCart = {addToCart} // to get addToCart function as props in Modal
+          // cart = {cart}        // 
+          // setCart = {setCart}
+        />
+      </Modal>}
 
     <Footer/>
   </div>);

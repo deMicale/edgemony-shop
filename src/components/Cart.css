@@ -3,6 +3,14 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    overflow-y: scroll;
+    max-height: 75vh;
+    -ms-overflow-style: none;  
+    scrollbar-width: none;
+}
+
+.cart::-webkit-scrollbar {
+    display: none;
 }
 
 .footerCart{

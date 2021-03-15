@@ -22,13 +22,7 @@
 .modalContent {
     z-index: 15;
 }
-.modalCard{
-    max-width: 520px;
-    min-width: 300px;
-    background-color: white;
-    border-radius: 5px;
-    border: 1px solid black;
-}
+
 .btnClose {
     background-color: #2596be;
     padding: 5px;
@@ -38,27 +32,3 @@
     left: 5px;
 }
 
-.descriptionEl {
-    overflow-y: scroll;
-    max-height: 80px;
-}
-.descriptionEl::-webkit-scrollbar {
-    width: 1em;
-  }
-   
-  .descriptionEl::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  }
-   
-  .descriptionEl::-webkit-scrollbar-thumb {
-    background-color: darkgrey;
-    outline: 1px solid slategrey;
-  }
-
-.btnAddToCart {
-    border-radius: 10px;
-    background-color:yellow;
-    padding: 1%;
-    border: 2px solid yellow;
-    margin-bottom: 10px;
-}
