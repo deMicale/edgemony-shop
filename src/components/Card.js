@@ -1,5 +1,7 @@
 import './Card.css';
 
+import {Link} from "react-router-dom";
+
 function Card(props){
 
     return(
@@ -10,12 +12,11 @@ function Card(props){
             <div className ='Text-card'>
                 <h1 className ='titleEl'>{props.product.title}</h1>
                 <p className='priceEl'>€{props.product.price}</p>
-                <button className="view" onClick={() => {
-                    // document.body.style.position = 'fixed';
-                    document.body.style.overflow= 'hidden';
-                    props.setModalIsOpen(true);
-                    props.setProductInModal(props.product);
-                    }}>View more details</button>   
+
+                <Link to = {`/product/${props.product.id}`}>
+                    <button className="view">View more details</button>
+                </Link>
+                
             </div>
         </div>
         )

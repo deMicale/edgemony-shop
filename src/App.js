@@ -1,18 +1,27 @@
 import "./App.css";
 import Header from './components/Header/Header';
 import Footer from './components/Footer';
-import Hero from './components/Hero';
-import Search from './components/Search';
-import ContainerCard from "./components/ContainerCard";
-import Category from './components/Category';
-import Modal from "./components/Modal";
+
 import ModalSidebar from './components/ModalSidebar';
-import ProductDetail from './components/ProductDetail';
+
 import Cart from "./components/Cart";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
+// ROUTER
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 
+//PAGES
+import Home from './pages/Home';
+import Page404 from './pages/Page404';
+import Product from './pages/Product';
+// import Cart from './pages/Cart';
+
+//data in header
 const data = {
   title: "Edgemony Shop",
   description: "A fake e-commerce with a lot of potential",
@@ -22,40 +31,16 @@ const data = {
     "https://images.pexels.com/photos/4123897/pexels-photo-4123897.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
 };
 
+
+
+
+
 function App() {
 
   const [products, setProducts] = useState([]);
-  const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [retry, setRetry] = useState(false);
-
-  useEffect(() => {
-
-    setLoading(true);
-    setError(false);
-
-    fetch('https://fakestoreapi.com/products')
-      .then(response => response.json())
-      .then((products) => {
-        setProducts(products);
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setError(true);
-      });
-  }, [retry]);
-
-  // search bar and filter categories
-  const [searchTerm, setSearchTerm] = useState("");
-  const [category, setCategory] = useState([]);
 
   //cart
   const [cart, setCart] = useState([]);
-
-  //modal
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [productInModal, setProductInModal] = useState({});
 
   //modal cart
   const [modalSidebar, setModalSidebar] = useState(false);
@@ -85,61 +70,52 @@ function App() {
   }
 
 
-
-  return (<div className="App">
-    <Header
-      logo ={data.logo}
-      // title = {data.title}
-      cart = {cart}
-      products = {products}
-      setModalSidebar = {setModalSidebar}
-      />
-    <Hero
-      cover = {data.cover}
-      title = {data.title}
-      description = {data.description}
-    />
-    <div className="app-filter-box">
-      <Search 
-        searchTerm = {searchTerm}
-        setSearchTerm = {setSearchTerm}
-      />
-      <Category
-        category = {category}
-        setCategory={setCategory}
-      />
-    </div>
-    <ContainerCard
-      products = {products}
-      isLoading = {isLoading}
-      error = {error}
-      setRetry ={setRetry}
-      searchTerm = {searchTerm}
-      retry = {retry}
-      setError = {setError}
-      category = {category}
-      setModalIsOpen = {setModalIsOpen}
-      setProductInModal = {setProductInModal}
-    />
-    {modalSidebar && <ModalSidebar setModalSidebar={setModalSidebar}>
-        <Cart
-          cart ={cart}
+  return (
+    <Router>
+      <div className="App">
+        <Header
+          logo ={data.logo}
+          cart = {cart}
           products = {products}
-          removeFromCart = {removeFromCart} // function as props in modalCart
-          setProductQuantity = {setProductQuantity}
-          />  
-      </ModalSidebar>}
-    {modalIsOpen && <Modal isOpen={setModalIsOpen}>
-        <ProductDetail
-          product={productInModal}
-          addToCart = {addToCart} // to get addToCart function as props in Modal
-          // cart = {cart}        // 
-          // setCart = {setCart}
+          setModalSidebar = {setModalSidebar}
         />
-      </Modal>}
 
-    <Footer/>
-  </div>);
+        <Switch>
+
+          <Route path = "/product/:id">
+            <Product
+              addToCart ={addToCart}
+            />
+          </Route>
+
+          <Route path = "/cart">
+          {modalSidebar && <ModalSidebar setModalSidebar={setModalSidebar}>
+              <Cart
+                cart ={cart}
+                products = {products}
+                removeFromCart = {removeFromCart} // function as props in modalCart
+                setProductQuantity = {setProductQuantity}
+                />  
+            </ModalSidebar>}
+          </Route>
+
+          <Route exact path = "/">
+            <Home
+              data = {data}
+              products = {products}
+              setProducts = {setProducts}
+            />
+          </Route>
+          
+          <Route path = "*">
+            <Page404/>
+          </Route>
+
+        </Switch>
+        <Footer/>
+      </div>
+    </Router>
+  );
 }
 
 export default App;
