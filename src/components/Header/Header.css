@@ -1,6 +1,6 @@
 .App-header{
     height:15vh;
-    min-width: 100vh;
+    min-width: 100%;
     /* border:1px solid black; */
     display:flex;
     background-color: #a3a7a3;
@@ -10,6 +10,11 @@
     left: 0px;
     right:0px;
     z-index: 4;
+    align-items: center;
+}
+.App-logo{
+    max-height: 15vh;
+    max-width: 40vh;
 }
 
 /* @media only screen and (max-width: 768px) {

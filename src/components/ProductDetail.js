@@ -8,14 +8,14 @@ function ProductDetail(props){
 
     return(
 
-        <div className ='modalCard'>
-            <div className ='Img-card'>
+        <div className ='productDetail'>
+            <div className ='product-image'>
                 <img src={props.product.image} alt ='product' className='imgEl'/>
             </div>
-            <div className ='Text-card'>
-                <h1 className ='titleEl'>{props.product.title}</h1>
-                <p className='descriptionEl'>{props.product.description}</p>
-                <p className='priceEl'>€{props.product.price} </p>
+            <div className ='product-text'>
+                <h1 className ='product-title'>{props.product.title}</h1>
+                <p className='product-description'>{props.product.description}</p>
+                <p className='product-price'>€{props.product.price} </p>
                 <button className ="btnAddToCart" onClick={() => { 
                     if(buttonText!=="In cart"){
                         setButtonText("In cart");

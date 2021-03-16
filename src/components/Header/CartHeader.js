@@ -12,7 +12,7 @@ function CartHeader(props){
                 props.setModalSidebar(true);
                 document.body.style.overflow = 'hidden';
             }}>
-                <img src={process.env.PUBLIC_URL + 'shopping-cart.png'} 
+                <img src={process.env.PUBLIC_URL + '/shopping-cart.png'} 
                     alt="cart-logo"
                     className="iconCart"/>
                 <p className="numCart">{props.cart.length}</p>
