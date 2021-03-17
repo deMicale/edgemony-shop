@@ -12,8 +12,7 @@ function ContainerCard(props){
         <div className='card-container'>
             {empty = true}
             {!props.isLoading ? (props.products.map(product => {
-                if((product.title.toLowerCase().includes(props.searchTerm.toLowerCase())
-                    || product.description.toLowerCase().includes(props.searchTerm.toLowerCase()))
+                if(product.title.toLowerCase().includes(props.searchTerm.toLowerCase())
                     && (props.category.includes(product.category) || props.category.length === 0)) {
                     empty = false;
                     return <Card product = {product} key = {product.id} />
@@ -24,7 +23,7 @@ function ContainerCard(props){
             ) // first condition ternary operator
             : (<Loader/>)
             }
-            {empty && <div> <p>Your research returned no results</p></div>}
+            {empty && !props.isLoading && <div><p>Your research returned no results</p></div>}
             {props.error&&<Error
                 setRetry={props.setRetry} 
                 retry = {props.retry} 

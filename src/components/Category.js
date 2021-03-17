@@ -4,12 +4,12 @@ import {useState, useEffect} from 'react';
 
 function Category (props) {
     
-    const [categories, setCategories] = useState(props.cache ? props.cache.categories : []);
+    const [categories, setCategories] = useState('categories' in props.cache ? props.cache.categories : []);
     const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
 
-        if (props.cache !== undefined) {
+        if('categories' in props.cache) {
             return;
         }
 
@@ -20,11 +20,12 @@ function Category (props) {
           .then((categories) => {
               setCategories(categories);
               setLoading(false);
-              props.cache = {categories};
+              props.cache.categories = categories;
           })
           .catch(() => {
               setLoading(false);
           });
+          // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
 
     return(

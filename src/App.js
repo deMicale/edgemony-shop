@@ -33,11 +33,11 @@ const data = {
 
 
 
-let cache;
+let cache = {};
 
 function App() {
 
-  const [products, setProducts] = useState(cache ? cache.products : []);
+  const [products, setProducts] = useState('products' in cache ? cache.products : []); //'key' in object
 
   //cart
   const [cart, setCart] = useState([]);

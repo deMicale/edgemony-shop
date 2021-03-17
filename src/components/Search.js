@@ -11,7 +11,7 @@ function Search(props){
                     placeholder="Search"
                     value ={props.searchTerm}
                     onChange ={(evt) => {
-                        props.setSearchTerm(evt.target.value)
+                        props.onSearchTerm(evt.target.value)
                     }}
                 />
             </form>
