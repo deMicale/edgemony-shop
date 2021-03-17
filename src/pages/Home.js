@@ -3,15 +3,27 @@ import Search from '../components/Search';
 import ContainerCard from "../components/ContainerCard";
 import Category from '../components/Category';
 
-import {useState, useEffect} from 'react';
 
-function Home({data, products, setProducts}){
+//Tools from react
+import {useState, useEffect} from 'react';
+import { useHistory, useLocation } from 'react-router';
+
+ 
+
+function Home({data, products, setProducts, cache}){
     
     const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [retry, setRetry] = useState(false);
+    console.log(cache)
+
 
     useEffect(() => {
+
+        // cache condition (if there is a cache, do nothing)
+        if(cache !== undefined) {
+            return;
+        }
 
         setLoading(true);
         setError(false);
@@ -21,6 +33,7 @@ function Home({data, products, setProducts}){
         .then((products) => {
             setProducts(products);
             setLoading(false);
+            cache = {products}; //cache store
         })
         .catch(() => {
             setLoading(false);
@@ -29,8 +42,36 @@ function Home({data, products, setProducts}){
     }, [retry]);
 
     // search bar and filter categories
-    const [searchTerm, setSearchTerm] = useState("");
-    const [category, setCategory] = useState([]);
+    const [searchTerm, setSearchTerm] = useState(""); 
+
+
+
+    
+
+
+
+    //LOCATION
+    const location = useLocation();
+    const history = useHistory();
+
+
+    const categoriesParams = new URLSearchParams(location.search).get("categories"); //get params from Url (string)
+    const category = categoriesParams?categoriesParams.split(",") : [] ; // transform string in an array of string
+    
+
+    function updateCategories(categories){
+
+        const newParams = new URLSearchParams(location.search); // get URL params and put them in an object
+        const selectedParams = categories.join(",");
+        if (categories.lenght===0){
+            location.delete("categories");
+        }   else {
+            newParams.set('categories', selectedParams) // set method to set categories having selectedParams as value
+        }
+        history.push({search:"?"+ newParams.toString()}); //update my query string 
+    }
+    
+
 
     return(
         <div className = "home">
@@ -46,7 +87,9 @@ function Home({data, products, setProducts}){
                 />
                 <Category
                     category = {category}
-                    setCategory={setCategory}
+                    // setCategory={setCategory}
+                    cache = {cache}
+                    onSelectedCategory = {updateCategories} //get function
                 />
             </div>
             <ContainerCard

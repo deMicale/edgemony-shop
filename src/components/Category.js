@@ -4,10 +4,14 @@ import {useState, useEffect} from 'react';
 
 function Category (props) {
     
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState(props.cache ? props.cache.categories : []);
     const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
+
+        if (props.cache !== undefined) {
+            return;
+        }
 
         setLoading(true);
 
@@ -16,6 +20,7 @@ function Category (props) {
           .then((categories) => {
               setCategories(categories);
               setLoading(false);
+              props.cache = {categories};
           })
           .catch(() => {
               setLoading(false);
@@ -37,7 +42,7 @@ function Category (props) {
                                 } else {
                                     cat.push(category)
                                 }
-                                props.setCategory(cat);
+                                props.onSelectedCategory(cat);
                             }} type='checkbox' id={category}/>
                             <label htmlFor={category}>{category}</label>
                         </div>);
