@@ -4,10 +4,14 @@ import {useState, useEffect} from 'react';
 
 function Category (props) {
     
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState('categories' in props.cache ? props.cache.categories : []);
     const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
+
+        if('categories' in props.cache) {
+            return;
+        }
 
         setLoading(true);
 
@@ -16,10 +20,12 @@ function Category (props) {
           .then((categories) => {
               setCategories(categories);
               setLoading(false);
+              props.cache.categories = categories;
           })
           .catch(() => {
               setLoading(false);
           });
+          // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
 
     return(
@@ -37,7 +43,7 @@ function Category (props) {
                                 } else {
                                     cat.push(category)
                                 }
-                                props.setCategory(cat);
+                                props.onSelectedCategory(cat);
                             }} type='checkbox' id={category}/>
                             <label htmlFor={category}>{category}</label>
                         </div>);

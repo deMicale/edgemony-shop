@@ -33,11 +33,11 @@ const data = {
 
 
 
-
+let cache = {};
 
 function App() {
 
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState('products' in cache ? cache.products : []); //'key' in object
 
   //cart
   const [cart, setCart] = useState([]);
@@ -104,6 +104,7 @@ function App() {
               data = {data}
               products = {products}
               setProducts = {setProducts}
+              cache = {cache}
             />
           </Route>
           
