@@ -2,11 +2,8 @@ import "./App.css";
 import Header from './components/Header/Header';
 import Footer from './components/Footer';
 
-import ModalSidebar from './components/ModalSidebar';
 
-import Cart from "./components/Cart";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // ROUTER
 import {
@@ -19,7 +16,7 @@ import {
 import Home from './pages/Home';
 import Page404 from './pages/Page404';
 import Product from './pages/Product';
-// import Cart from './pages/Cart';
+import Cart from './pages/Cart';
 
 //data in header
 const data = {
@@ -34,6 +31,7 @@ const data = {
 
 
 let cache = {};
+let cartId;
 
 function App() {
 
@@ -42,32 +40,126 @@ function App() {
   //cart
   const [cart, setCart] = useState([]);
 
-  //modal cart
-  const [modalSidebar, setModalSidebar] = useState(false);
+  ///----------------------///
+  async function postItemToCart(cartId, productId, quantity) {
+    const response = await fetch(`https://fakestoreapi.com/carts/${cartId}/items`, {
+      method: 'POST',
+      body: JSON.stringify({ id: productId, quantity })
+    });
+    const data = await response.json();
+    if (response.status >= 400) {
+      throw new Error(data.message);
+    }
+    return data;
+  }
+
+  async function deleteItemFromCart(cartId, productId) {
+    const response = await fetch(`carts/${cartId}/items/${productId}`, {
+      method: 'DELETE',
+    });
+    const data = await response.json();
+    if (response.status >= 400) {
+      throw new Error(data.message);
+    }
+    return data;
+  }
+
+  async function addToCart(productId) {
+    try {
+      const cartObj = await postItemToCart(cartId, productId, 1);
+      setCart(cartObj.items);
+    } catch (error) {
+      console.error(`postItemToCart API call response error! ${error.message}`);
+    }
+  }
+
+  async function removeFromCart(productId) {
+    try {
+      const cartObj = await deleteItemFromCart(cartId, productId);
+      setCart(cartObj.items);
+    } catch (error) {
+      console.error(`deleteItemFromCart API call response error! ${error.message}`);
+    }
+  }
+
+  async function setProductQuantity(productId, quantity) {
+    try {
+      const cartObj = await postItemToCart(cartId, productId, quantity);
+      setCart(cartObj.items);
+    } catch (error) {
+      console.error(`postItemToCart API call response error! ${error.message}`);
+    }
+  }
+
+  // const [apiErrors, setApiErrors] = useState({});
+  // const cartError = apiErrors.cart;
+  // const errorKey = Object.keys(apiErrors).find((key) => apiErrors[key] != null);
+  // const setProductListError = useCallback(
+  //   (error) => setApiErrors((errors) => ({ ...errors, productList: error })),
+  //   []
+  // );
+  // const setProductError = useCallback(
+  //   (error) => setApiErrors((errors) => ({ ...errors, product: error })),
+  //   []
+  // );
+  // const setCartError = useCallback(
+  //   (error) => setApiErrors((errors) => ({ ...errors, cart: error })),
+  //   []
+  // );
  
-  //function adding each product to the cart thanks to prdoduct id
-  function addToCart(productId){  
-    setCart([...cart, { id: productId, quantity: 1}]); 
-  // to access to the cart and to build a new array by adding a new object 
-  //to render the new product template
-  }
+  const [isLoading, setLoading] = useState(false);
+  // const [retry, setRetry] = useState(false);
   
-  //function removing each product by comparing its id and the id product 
-  //selected by the user
-  function removeFromCart(productId) {
-    setCart(cart.filter((product) => product.id !== productId));
-    // to filter the cart and to render for each product after have verified 
-    //whether there is a match or not. If there isn't a matching, remove the product selcted 
-  }
+  // Initial cart fetch from API
+  useEffect(() => {
+    const cartIdFromLocalStorage = localStorage.getItem("edgemony-cart-id");
+    // We fetch only of we have a Cart ID available
+    if (!cartIdFromLocalStorage) {
+      return;
+    }
+
+    setLoading(true);
+    // setCartError(undefined);
+
+    fetch(`https://fakestoreapi.com/carts/${cartIdFromLocalStorage}`)
+      .then(response => response.json())
+      .then((cartObj) => {
+          setLoading(false);
+          setCart(cartObj.items);
+          cartId = cartObj.id;
+      })
+      .catch(({ message }) => {
+          setLoading(false);
+          // setCartError({ message, retry: () => setRetry(!retry) });
+      });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); //<- retry, setCartError
+  ///----------------------///
+
+
+  // //function adding each product to the cart thanks to prdoduct id
+  // function addToCart(productId){  
+  //   setCart([...cart, { id: productId, quantity: 1}]); 
+  // // to access to the cart and to build a new array by adding a new object 
+  // //to render the new product template
+  // }
   
-  //to set the quantity
-  function setProductQuantity(productId, quantity) {
-    setCart(
-      cart.map((product) =>
-        product.id === productId ? { ...product, quantity } : product
-      )
-    );
-  }
+  // //function removing each product by comparing its id and the id product 
+  // //selected by the user
+  // function removeFromCart(productId) {
+  //   setCart(cart.filter((product) => product.id !== productId));
+  //   // to filter the cart and to render for each product after have verified 
+  //   //whether there is a match or not. If there isn't a matching, remove the product selcted 
+  // }
+  
+  // //to set the quantity
+  // function setProductQuantity(productId, quantity) {
+  //   setCart(
+  //     cart.map((product) =>
+  //       product.id === productId ? { ...product, quantity } : product
+  //     )
+  //   );
+  // }
 
 
   return (
@@ -77,7 +169,7 @@ function App() {
           logo ={data.logo}
           cart = {cart}
           products = {products}
-          setModalSidebar = {setModalSidebar}
+          showCart={!isLoading} //<- && !cartError
         />
 
         <Switch>
@@ -89,14 +181,13 @@ function App() {
           </Route>
 
           <Route path = "/cart">
-          {modalSidebar && <ModalSidebar setModalSidebar={setModalSidebar}>
               <Cart
                 cart ={cart}
                 products = {products}
                 removeFromCart = {removeFromCart} // function as props in modalCart
                 setProductQuantity = {setProductQuantity}
-                />  
-            </ModalSidebar>}
+                isLoading={isLoading}
+              />  
           </Route>
 
           <Route exact path = "/">
@@ -113,6 +204,15 @@ function App() {
           </Route>
 
         </Switch>
+
+        {/* {errorKey ? (
+          <ErrorBanner
+            message={apiErrors[errorKey].message}
+            close={() => setApiErrors({ ...apiErrors, [errorKey]: undefined })}
+            retry={apiErrors[errorKey].retry}
+          />
+        ) : null} */}
+
         <Footer/>
       </div>
     </Router>

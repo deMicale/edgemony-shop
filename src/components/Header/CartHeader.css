@@ -7,20 +7,23 @@
     flex-wrap: nowrap;
     align-items: center;
 }
+.cartHeader > a{
+    text-decoration: none;
+}
 .wrapperIconCart{
     max-width:60px;
-    max-height: 60px;
+    max-height: 50px;
     cursor: pointer;
 }
 .iconCart{
     max-width:60px;
-    max-height: 60px;
+    max-height: 50px;
     margin-top: 15px;
 }
 .numCart{
     position: relative;
-    top: -80px;
-    right: -50px;
+    top: -75px;
+    right: -35px;
     border-radius: 100%;
     background-color: yellow;
     width: fit-content;

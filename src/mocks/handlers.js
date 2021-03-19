@@ -1,33 +1,77 @@
-/* eslint-disable no-throw-literal */
 import { rest } from "msw";
 const products = require("./data/products.json");
 const categories = require("./data/categories.json");
 
-const localStoragePrefix = "edgemony-shop";
+const localStoragePrefix = "_edgemony-shop";
 const localStorageJSON = localStorage.getItem(localStoragePrefix);
 const savedData = localStorageJSON
   ? JSON.parse(localStorageJSON)
-  : { orders: [], carts: [], cartId: 0, v: "0.1" };
+  : { orders: [], carts: [], cartId: 0, orderId: 0, v: "0.2" };
+
+(function migration02() {
+  if (savedData.v === "0.1") {
+    savedData.v = "0.2";
+    savedData.orderId = 0;
+  }
+})();
 
 function save() {
   localStorage.setItem(localStoragePrefix, JSON.stringify(savedData));
 }
 
+if (!localStorage.getItem("edgemony-cart-id")) {
+  const newCart = createCart();
+  localStorage.setItem("edgemony-cart-id", newCart.id);
+}
+
+class HttpError extends Error {
+  constructor(message, status) {
+    super(message);
+    this.status = status;
+  }
+}
+
 function getCart(cartId) {
   const cart = savedData.carts.find((cart) => cart.id === cartId);
   if (!cart) {
-    throw { message: "Cart not found", status: 404 };
+    throw new HttpError("Cart not found", 404);
   }
   return cart;
 }
 
-function getCartWithProducts(cart) {
+function mapItem({ id: productId, quantity }) {
+  const { id, title, price, image } = getProduct(productId, 400);
+  return { id, title, price, image, quantity };
+}
+
+function mapOrderToListItem(order) {
+  const { id, items, billingData, created } = order;
   return {
-    ...cart,
-    items: cart.items.map(({ id: productId, quantity }) => {
-      const { id, title, price, image } = getProduct(productId, 400);
-      return { id, title, price, image, quantity };
-    }),
+    id,
+    nItems: items.length,
+    totalPrice: items.reduce((total, item) => total + item.price, 0),
+    name: billingData?.name,
+    lastName: billingData?.lastName,
+    email: billingData?.email,
+    created,
+  };
+}
+
+function mapOrderToItem(order) {
+  const { id, items, billingData, created } = order;
+  return {
+    id,
+    items: items.map(mapItem),
+    billingData,
+    created,
+  };
+}
+
+function mapCart(cart) {
+  const { items, ...otherProps } = cart;
+  return {
+    items: items.map(mapItem),
+    ...otherProps,
   };
 }
 
@@ -41,7 +85,7 @@ function createCart() {
 
 function addToCart(cartId, productId, quantity) {
   if (!cartId || !productId || quantity <= 0) {
-    throw { status: 400, message: "Invalid data" };
+    throw new HttpError("Invalid data", 400);
   }
   const cart = getCart(cartId);
   const { id } = getProduct(productId, 400); // check if the product exists
@@ -52,26 +96,56 @@ function addToCart(cartId, productId, quantity) {
     cart.items.push({ id, quantity });
   }
   save();
-  return getCartWithProducts(cart);
+  return cart;
 }
 
 function removeFromCart(cartId, productId) {
   const cart = getCart(cartId);
   const index = cart.items.findIndex((product) => product.id === productId);
   if (index === -1) {
-    throw { message: "Item not found", status: 404 };
+    throw new HttpError("Item not found", 404);
   }
   cart.items.splice(index, 1);
   save();
-  return getCartWithProducts(cart);
+  return cart;
 }
 
 function getProduct(id, status = 404) {
   const product = products.find((product) => product.id === id);
   if (!product) {
-    throw { message: "Product not found", status };
+    throw new HttpError("Product not found", status);
   }
   return product;
+}
+
+function updateCartBillingData(cartId, billingData) {
+  if (
+    !cartId ||
+    typeof billingData !== "object" ||
+    typeof billingData.name !== "string" ||
+    !billingData.name ||
+    typeof billingData.lastName !== "string" ||
+    !billingData.lastName ||
+    typeof billingData.address !== "string" ||
+    !billingData.address ||
+    typeof billingData.email !== "string" ||
+    !billingData.email
+  ) {
+    throw new HttpError("Invalid data", 400);
+  }
+  const cart = getCart(cartId);
+  cart.billingData = billingData;
+  save();
+  return cart;
+}
+
+function createOrder(cartId) {
+  const cart = getCart(cartId);
+  const id = ++savedData.orderId;
+  const order = { ...cart, id, created: new Date() };
+  savedData.orders.push(order);
+  save();
+  return order;
 }
 
 const baseURL = "https://fakestoreapi.com";
@@ -152,9 +226,28 @@ export const handlers = [
       const id = parseInt(req.params.id);
       try {
         const cart = getCart(id);
-        return res(ctx.status(200), ctx.json(getCartWithProducts(cart)));
+        return res(ctx.status(200), ctx.json(mapCart(cart)));
       } catch (error) {
-        if (error.status) {
+        if (error instanceof HttpError) {
+          return res(
+            ctx.status(error.status),
+            ctx.json({ message: error.message })
+          );
+        }
+        return res(ctx.status(500), ctx.json({ message: error.message }));
+      }
+    })
+  ),
+  rest.patch(
+    `${baseURL}/carts/:id`,
+    randomError(function getCartApi(req, res, ctx) {
+      const id = parseInt(req.params.id);
+      try {
+        const { billingData } = JSON.parse(req.body);
+        const cart = updateCartBillingData(id, billingData);
+        return res(ctx.status(200), ctx.json(mapCart(cart)));
+      } catch (error) {
+        if (error instanceof HttpError) {
           return res(
             ctx.status(error.status),
             ctx.json({ message: error.message })
@@ -170,12 +263,10 @@ export const handlers = [
       try {
         const id = parseInt(req.params.id);
         const { id: productId, quantity } = JSON.parse(req.body);
-        return res(
-          ctx.status(200),
-          ctx.json(addToCart(id, productId, quantity))
-        );
+        const cart = addToCart(id, productId, quantity);
+        return res(ctx.status(200), ctx.json(mapCart(cart)));
       } catch (error) {
-        if (error.status) {
+        if (error instanceof HttpError) {
           return res(
             ctx.status(error.status),
             ctx.json({ message: error.message })
@@ -196,10 +287,46 @@ export const handlers = [
     randomError(function removeCartItemApi(req, res, ctx) {
       try {
         const id = parseInt(req.params.id);
-        const productId = parseInt(req.params.id);
-        return res(ctx.status(200), ctx.json(removeFromCart(id, productId)));
+        const productId = parseInt(req.params.productId);
+        const cart = removeFromCart(id, productId);
+        return res(ctx.status(200), ctx.json(mapCart(cart)));
       } catch (error) {
-        if (error.status) {
+        if (error instanceof HttpError) {
+          return res(
+            ctx.status(error.status),
+            ctx.json({ message: error.message })
+          );
+        }
+        return res(ctx.status(500), ctx.json({ message: error.message }));
+      }
+    })
+  ),
+  rest.get(
+    `${baseURL}/orders`,
+    randomError(function getOrdersApi(req, res, ctx) {
+      try {
+        const orders = savedData.orders;
+        return res(ctx.status(200), ctx.json(orders.map(mapOrderToListItem)));
+      } catch (error) {
+        if (error instanceof HttpError) {
+          return res(
+            ctx.status(error.status),
+            ctx.json({ message: error.message })
+          );
+        }
+        return res(ctx.status(500), ctx.json({ message: error.message }));
+      }
+    })
+  ),
+  rest.post(
+    `${baseURL}/orders`,
+    randomError(function createOrderApi(req, res, ctx) {
+      try {
+        const { cartId } = JSON.parse(req.body);
+        const order = createOrder(cartId);
+        return res(ctx.status(200), ctx.json(mapOrderToItem(order)));
+      } catch (error) {
+        if (error instanceof HttpError) {
           return res(
             ctx.status(error.status),
             ctx.json({ message: error.message })
