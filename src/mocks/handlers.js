@@ -169,7 +169,7 @@ function getError() {
 
 function randomError(resolverFn) {
   return function (req, res, ctx) {
-    if (Math.random() > 0.9) {
+    if (Math.random() > 1) {
       const { status, message } = getError();
       return res(ctx.status(status), ctx.json({ message }));
     }

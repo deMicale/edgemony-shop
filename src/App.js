@@ -17,6 +17,7 @@ import Home from './pages/Home';
 import Page404 from './pages/Page404';
 import Product from './pages/Product';
 import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
 
 //data in header
 const data = {
@@ -34,9 +35,6 @@ let cache = {};
 let cartId;
 
 function App() {
-
-  const [products, setProducts] = useState('products' in cache ? cache.products : []); //'key' in object
-
   //cart
   const [cart, setCart] = useState([]);
 
@@ -54,7 +52,7 @@ function App() {
   }
 
   async function deleteItemFromCart(cartId, productId) {
-    const response = await fetch(`carts/${cartId}/items/${productId}`, {
+    const response = await fetch(`https://fakestoreapi.com/carts/${cartId}/items/${productId}`, {
       method: 'DELETE',
     });
     const data = await response.json();
@@ -109,7 +107,7 @@ function App() {
  
   const [isLoading, setLoading] = useState(false);
   // const [retry, setRetry] = useState(false);
-  
+
   // Initial cart fetch from API
   useEffect(() => {
     const cartIdFromLocalStorage = localStorage.getItem("edgemony-cart-id");
@@ -168,12 +166,18 @@ function App() {
         <Header
           logo ={data.logo}
           cart = {cart}
-          products = {products}
           showCart={!isLoading} //<- && !cartError
         />
 
         <Switch>
 
+          <Route path = "/checkout">
+            <Checkout  
+              cartId = {cartId}
+              setCart = {setCart}
+            />
+          </Route>
+          
           <Route path = "/product/:id">
             <Product
               addToCart ={addToCart}
@@ -183,7 +187,6 @@ function App() {
           <Route path = "/cart">
               <Cart
                 cart ={cart}
-                products = {products}
                 removeFromCart = {removeFromCart} // function as props in modalCart
                 setProductQuantity = {setProductQuantity}
                 isLoading={isLoading}
@@ -193,9 +196,8 @@ function App() {
           <Route exact path = "/">
             <Home
               data = {data}
-              products = {products}
-              setProducts = {setProducts}
               cache = {cache}
+              // onError = {setProductListError}
             />
           </Route>
           

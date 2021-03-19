@@ -8,8 +8,7 @@ function Header(props){
         <header className="App-header">
             <Link to='/'><img src={props.logo} className="App-logo" alt="logo" /></Link>
             {props.showCart && <CartHeader
-             cart = {props.cart}
-             products ={props.products}/>}
+             cart = {props.cart}/>}
         </header>
     );
 }

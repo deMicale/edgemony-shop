@@ -1,0 +1,18 @@
+.formCheckout{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20vh;
+    
+}
+
+.labelCheckout{
+    padding: 2vh;
+}
+.inputCheckout{
+    padding: 2vh;
+    border-radius: 10px;
+}
+.required{
+    color: red;
+}

@@ -10,7 +10,8 @@ import { useHistory, useLocation } from 'react-router';
 
  
 
-function Home({data, products, setProducts, cache}){
+function Home({data, cache}){
+    const [products, setProducts] = useState('products' in cache ? cache.products : []); //'key' in object
     
     const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState(false);
@@ -28,16 +29,16 @@ function Home({data, products, setProducts, cache}){
         setError(false);
 
         fetch('https://fakestoreapi.com/products')
-        .then(response => response.json())
-        .then((products) => {
-            setProducts(products);
-            setLoading(false);
-            cache.products = products; //cache store
-        })
-        .catch(() => {
-            setLoading(false);
-            setError(true);
-        });
+            .then(response => response.json())
+            .then((products) => {
+                setProducts(products);
+                setLoading(false);
+                cache.products = products; //cache store
+            })
+            .catch(() => {
+                setLoading(false);
+                setError(true);
+            });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [retry]);
 

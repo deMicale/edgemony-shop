@@ -22,7 +22,9 @@
     max-width: 80vh;
     min-width: 80vh;
     border: 1px solid black;
+    align-items: center;
 }
+
 
 
 
@@ -70,7 +72,14 @@
     background-color: rgb(28, 172, 28);
     border-radius: 8px;
 }
-
+.btnCheckout{
+    border-radius: 5px;
+    background-color: greenyellow;
+    padding: 1vh;
+}
+ .btnCheckout:hover{
+    background-color: yellow;
+}
 
 @media only screen and (max-width: 768px) {
 

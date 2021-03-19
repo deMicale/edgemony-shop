@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 
 function CartHeader(props){
     const totalPrice = props.cart.reduce((acc, cartItem) =>{
-        const product = props.products.find(product => product.id === cartItem.id)
-        return acc + (product.price*cartItem.quantity)
+        return acc + (cartItem.price*cartItem.quantity)
     },0).toFixed(2);
 
     const totalQuantity = props.cart.reduce((acc, cartItem) =>{
